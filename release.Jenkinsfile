@@ -150,11 +150,11 @@ try {
                                 [string(credentialsId: 'public-github-token', variable: 'token'),
                                 sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')
                             ]) {
-                            // Generate release changelog
-                            changelogGenerator('/app/generate-release-changelog.sh --configure-git', ["APP_PATH=/app", "LATEST_VERSION=${appVersion}", "GITHUB_AUTH=${token}", "SSH_FILE=${sshfile}"])
-                            def releaseChangelog = readFile "./.changelog/release-changelog.md"
+                            // // Generate release changelog
+                            // changelogGenerator('/app/generate-release-changelog.sh --configure-git', ["APP_PATH=/app", "LATEST_VERSION=${appVersion}", "GITHUB_AUTH=${token}", "SSH_FILE=${sshfile}"])
+                            // def releaseChangelog = readFile "./.changelog/release-changelog.md"
 
-                            def data = "'{\"tag_name\": \"${appVersion}\",\"target_commitish\": \"${commitID}\",\"name\": \"${appVersion}\",\"body\": \"${releaseChangelog}\",\"draft\": false,\"prerelease\": ${isRelease ? 'false' : 'true'}}'"
+                            def data = "'{\"tag_name\": \"${appVersion}\",\"target_commitish\": \"${commitID}\",\"name\": \"${appVersion}\",\"body\": \"Release ${appVersion}\",\"draft\": false,\"prerelease\": ${isRelease ? 'false' : 'true'}}'"
                             def json = sh (script: "curl --data ${data} -H \"Authorization: token $token\" https://api.github.com/repos/kyma-project/kyma/releases", returnStdout: true)
                             echo json
                             def releaseID = getGithubReleaseID(json)
@@ -163,9 +163,9 @@ try {
                             // upload versions-overrides env file
                             sh "curl --data-binary @installation/versions-overrides.env -H \"Authorization: token $token\" -H \"Content-Type: text/plain\" https://uploads.github.com/repos/kyma-project/kyma/releases/${releaseID}/assets?name=${appVersion}.env"
                             
-                            // Generate CHANGELOG.md
-                            changelogGenerator('/app/generate-full-changelog.sh --configure-git', ["APP_PATH=/app", "LATEST_VERSION=${appVersion}", "GITHUB_AUTH=${token}", "SSH_FILE=${sshfile}"])
-                            sh "./tools/changelog-generator/app/push-full-changelog.sh --configure-git"
+                            // // Generate CHANGELOG.md
+                            // changelogGenerator('/app/generate-full-changelog.sh --configure-git', ["APP_PATH=/app", "LATEST_VERSION=${appVersion}", "GITHUB_AUTH=${token}", "SSH_FILE=${sshfile}"])
+                            // sh "./tools/changelog-generator/app/push-full-changelog.sh --configure-git"
                         }
                     }
 
