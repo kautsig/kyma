@@ -41,7 +41,11 @@ spec:
         name: tiller
     spec:
       serviceAccountName: tiller
-
+      dnsConfig:
+        options:
+        - name: ndots
+          value: ""
+          
       initContainers:
       - name: init-tiller
         image: eu.gcr.io/kyma-project/alpine-net:0.2.74
