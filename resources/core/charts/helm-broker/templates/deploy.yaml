@@ -23,7 +23,10 @@ spec:
         heritage: "{{ .Release.Service }}"
     spec:
       serviceAccountName: {{ template "fullname" . }}
-
+      dnsConfig:
+        options:
+        - name: ndots
+          value: ""
       initContainers:
       - name: "init-{{ .Chart.Name }}"
         image: "{{ .Values.global.containerRegistry.path }}/{{ .Values.global.alpine_net.dir }}alpine-net:{{ .Values.global.alpine_net.version }}"
