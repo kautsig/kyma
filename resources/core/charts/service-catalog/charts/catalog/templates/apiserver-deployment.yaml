@@ -32,6 +32,10 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: "{{ .Values.apiserver.serviceAccount }}"
+      dnsConfig:
+        options:
+        - name: ndots
+          value: ""
       containers:
       - name: apiserver
         image: {{ .Values.image }}

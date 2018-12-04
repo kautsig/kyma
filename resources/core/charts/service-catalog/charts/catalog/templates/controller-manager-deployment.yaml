@@ -32,6 +32,10 @@ spec:
         heritage: "{{ .Release.Service }}"
     spec:
       serviceAccountName: "{{ .Values.controllerManager.serviceAccount }}"
+      dnsConfig:
+        options:
+        - name: ndots
+          value: ""      
       containers:
       - name: controller-manager
         image: {{ .Values.image }}
